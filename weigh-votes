@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+    echo "usage: $0 <compensation request file or directory>"
+    exit 1
+fi
+
+STAKE_FILE=stake.csv
+PATH_ARG=$1
+
+if [ -d "$PATH_ARG" ]; then
+
+    find ${PATH_ARG%/} -type f -name '*.csv' -maxdepth 1 \
+        | grep -v README \
+        | xargs -Ifile $0 file
+
+elif [ -f "$PATH_ARG" ]; then
+
+    sort $PATH_ARG \
+        | join -t, $STAKE_FILE - \
+        | awk -F, -v path=$PATH_ARG '{vote=$5; stake=$4; weight+=vote*stake} END {printf("%s,%d\n", path, weight)}'
+
+else
+
+    echo "error: '$1' must be a file or directory"
+    exit 1
+
+fi
