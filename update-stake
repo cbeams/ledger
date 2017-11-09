@@ -20,7 +20,7 @@ cp $STAKE_FILE $STAKE_FILE_TMP1
 for APPROVED_COMPENSATION_REQUEST_FILE in $(cat $VOTING_RESULTS_FILE | awk -F, '{if ($2 > 0) print $1}'); do
     sort $APPROVED_COMPENSATION_REQUEST_FILE \
         | join -t, -a1 $STAKE_FILE_TMP1 - \
-        | awk -F, '{old_bal=$4; comp=$6; new_bal=old_bal+comp; printf("%s,%s,%s,%s\n", $1, $2, $3, new_bal)}' > $STAKE_FILE_TMP2 \
+        | awk -F, '{old_bal=$4; comp=$5; new_bal=old_bal+comp; printf("%s,%s,%s,%s\n", $1, $2, $3, new_bal)}' > $STAKE_FILE_TMP2 \
         && mv $STAKE_FILE_TMP2 $STAKE_FILE_TMP1
 done \
     && mv $STAKE_FILE_TMP1 $STAKE_FILE

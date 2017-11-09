@@ -18,7 +18,7 @@ elif [ -f "$PATH_ARG" ]; then
 
     sort $PATH_ARG \
         | join -t, $STAKE_FILE - \
-        | awk -F, -v path=$PATH_ARG '{vote=$5; stake=$4; weight+=vote*stake} END {printf("%s,%d\n", path, weight)}'
+        | awk -F, -v path=$PATH_ARG '{vote=$6; stake=$4; weight+=vote*stake} END {printf("%s,%d\n", path, weight)}'
 
 else
 
